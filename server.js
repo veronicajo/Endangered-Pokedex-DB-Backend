@@ -1,7 +1,6 @@
 const express = require('express');
-const app = express();  
-require('dotenv').config();          
-PORT = process.env.PORT || 60500;               
+const app = express();            
+PORT = 60500;               
 const db = require('./db-connector')
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -12,12 +11,11 @@ const bodyParser = require('body-parser');
 app.use(cors());
 app.use(bodyParser.urlencoded({extended:true}));
 
-app.get('/get/:table', async (req, res) => {
+app.get('/get/:table', (req, res) => {
     const tableName = req.params.table;
     if (tableName) {
         const sqlSelect = `SELECT * FROM ${tableName}`;
-        await db.pool.query(sqlSelect, (err, result) => {
-            console.log("SQL ERROR", err)
+        db.pool.query(sqlSelect, (err, result) => {
             console.log(result);
             res.send(JSON.stringify(result));
         });
