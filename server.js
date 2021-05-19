@@ -1,17 +1,22 @@
-/*
-    SETUP
-*/
-// Express
-var express = require('express');
-var app     = express();            
-PORT        = 60500;               
-// Database
-var db = require('./db-connector')
-
+const express = require('express');
+const app = express();            
+PORT = 60500;               
+const db = require('./db-connector')
+const cors = require('cors');
+const bodyParser = require('body-parser');
 /*
     ROUTES
 */
-app.get('/', (req, res) => {});
+// Middleware 
+app.use(cors());
+app.use(bodyParser.urlencoded({extended:true}));
+app.get('/get/animals', (req, res) => {
+    const sqlSelect = "SELECT * FROM endangeredSpecies";
+    db.pool.query(sqlSelect, (err, result) => {
+        console.log(result);
+        res.send(JSON.stringify(result));
+    })
+});
 
 /*
     LISTENER
