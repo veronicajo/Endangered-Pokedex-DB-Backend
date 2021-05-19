@@ -10,6 +10,7 @@ const bodyParser = require('body-parser');
 // Middleware 
 app.use(cors());
 app.use(bodyParser.urlencoded({extended:true}));
+
 app.get('/get/:table', (req, res) => {
     const tableName = req.params.table;
     if (tableName) {
@@ -22,7 +23,9 @@ app.get('/get/:table', (req, res) => {
         res.send("Incorrect table requested");
     }
 });
-
+app.use('/', (req, res) => {
+    res.send("App entry point");
+});
 /*
     LISTENER
 */
