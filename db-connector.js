@@ -3,15 +3,14 @@ var mysql = require('mysql')
 require('dotenv').config();
 
 // Create a 'connection pool' using the provided credentials
-var pool = mysql.createPool({
+var pool = mysql.createConnection({
     connectionLimit : 1000,
-    connectTimeout: 60 * 60 * 1000,
-    acquireTimeout  : 60 * 60 * 1000,
-    timeout         : 60 * 60 * 1000,
+    connectTimeout: 60000,
     host            : 'classmysql.engr.oregonstate.edu',
     user            : process.env.USERNAME,
     password        : process.env.PW,
-    database        : process.env.DB
+    database        : process.env.DB,
+    port            : process.env.PORT
 })
 
 // Export it for use in our application

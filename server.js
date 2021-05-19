@@ -16,10 +16,12 @@ app.get('/get/:table', (req, res) => {
     const tableName = req.params.table;
     if (tableName) {
         const sqlSelect = `SELECT * FROM ${tableName}`;
-        db.pool.query(sqlSelect, (err, result) => {
+        db.connect();
+        db.query(sqlSelect, (err, result) => {
             console.log("SQL ERROR ", err)
             console.log(result);
             res.send(JSON.stringify(result));
+            db.end();
         });
     } else {
         res.send("Incorrect table requested");
