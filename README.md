@@ -7,3 +7,5 @@ To get started:
 - `yarn install` this should get all the node modules needed
 - `yarn start` will run nodemon so you don't have to restart the process every time a change is made
 - Navigate to `localhost:60500` to see the server app running locally
+
+Deploy to Heroku: https://stark-garden-58400.herokuapp.com
