@@ -16,6 +16,7 @@ app.get('/get/:table', (req, res) => {
     if (tableName) {
         const sqlSelect = `SELECT * FROM ${tableName}`;
         db.pool.query(sqlSelect, (err, result) => {
+            console.log(err);
             console.log(result);
             res.send(JSON.stringify(result));
         });
