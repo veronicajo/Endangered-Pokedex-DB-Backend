@@ -1,6 +1,7 @@
 const express = require('express');
-const app = express();            
-PORT = 60500;               
+const app = express();  
+require('dotenv').config();          
+PORT = process.env.PORT || 60500;               
 const db = require('./db-connector')
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -16,7 +17,6 @@ app.get('/get/:table', (req, res) => {
     if (tableName) {
         const sqlSelect = `SELECT * FROM ${tableName}`;
         db.pool.query(sqlSelect, (err, result) => {
-            console.log(err);
             console.log(result);
             res.send(JSON.stringify(result));
         });
@@ -28,6 +28,6 @@ app.get('/get/:table', (req, res) => {
 /*
     LISTENER
 */
-app.listen(process.env.PORT || PORT, function(){         
+app.listen(PORT, function(){         
 console.log('Express started on http://localhost:' + PORT + '; press Ctrl-C to terminate.')
 });
