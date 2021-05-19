@@ -10,12 +10,17 @@ const bodyParser = require('body-parser');
 // Middleware 
 app.use(cors());
 app.use(bodyParser.urlencoded({extended:true}));
-app.get('/get/animals', (req, res) => {
-    const sqlSelect = "SELECT * FROM endangeredSpecies";
-    db.pool.query(sqlSelect, (err, result) => {
-        console.log(result);
-        res.send(JSON.stringify(result));
-    })
+app.get('/get/:table', (req, res) => {
+    const tableName = req.params.table;
+    if (tableName) {
+        const sqlSelect = `SELECT * FROM ${tableName}`;
+        db.pool.query(sqlSelect, (err, result) => {
+            console.log(result);
+            res.send(JSON.stringify(result));
+        });
+    } else {
+        res.send("Incorrect table requested");
+    }
 });
 
 /*
