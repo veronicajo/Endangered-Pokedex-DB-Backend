@@ -23,12 +23,10 @@ app.get('/get/:table', (req, res) => {
         res.send("Incorrect table requested");
     }
 });
-app.use('/', (req, res) => {
-    res.send("App entry point");
-});
+
 /*
     LISTENER
 */
-app.listen(PORT, function(){         
+app.listen(process.env.PORT || PORT, function(){         
 console.log('Express started on http://localhost:' + PORT + '; press Ctrl-C to terminate.')
 });
