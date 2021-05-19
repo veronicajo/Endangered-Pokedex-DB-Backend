@@ -12,16 +12,14 @@ const bodyParser = require('body-parser');
 app.use(cors());
 app.use(bodyParser.urlencoded({extended:true}));
 
-app.get('/get/:table', (req, res) => {
+app.get('/get/:table', async (req, res) => {
     const tableName = req.params.table;
     if (tableName) {
         const sqlSelect = `SELECT * FROM ${tableName}`;
-        db.connect();
-        db.query(sqlSelect, (err, result) => {
-            console.log("SQL ERROR ", err)
+        await db.pool.query(sqlSelect, (err, result) => {
+            console.log("SQL ERROR", err)
             console.log(result);
             res.send(JSON.stringify(result));
-            db.end();
         });
     } else {
         res.send("Incorrect table requested");
