@@ -10,25 +10,26 @@ const bodyParser = require('body-parser');
 */
 // Middleware 
 app.use(cors());
-app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.json());
 
-app.get('/get/numberLeft', (req, res) => {
+/**
+ * SELECT/GET
+ */
+app.get('/select/numberLeft', (req, res) => {
     const tableName = req.params.table;
         const sqlSelect = `SELECT numberLeftId, CASE WHEN inCaptivity = -1 THEN 'UNKNOWN' ELSE inCaptivity END as inCaptivity, inWild, decade, conservationStatus, (SELECT es.commonName) as animal, es.animalId FROM numberLeft nl INNER JOIN endangeredSpecies es ON es.animalId = nl.animalId`;
         db.pool.query(sqlSelect, (err, result) => {
-            console.log("QUERY ERROR ", err);
-            console.log(result);
+            if (err) console.log("SELECT NL QUERY ERROR ", err);
             res.send(JSON.stringify(result));
         });
 });
 
-app.get('/get/:table', (req, res) => {
+app.get('/select/:table', (req, res) => {
     const tableName = req.params.table;
     if (tableName) {
         const sqlSelect = `SELECT * FROM ${tableName}`;
         db.pool.query(sqlSelect, (err, result) => {
-            console.log("QUERY ERROR ", err);
-            console.log(result);
+            if (err) console.log("SELECT TABLE QUERY ERROR ", err);
             res.send(JSON.stringify(result));
         });
     } else {
@@ -36,7 +37,7 @@ app.get('/get/:table', (req, res) => {
     }
 });
 
-app.get('/get/endangeredHabitats/nativeHabitats/habitatId', (req, res) => {
+app.get('/select/endangeredHabitats/nativeHabitats/habitatId', (req, res) => {
         const sqlSelect = `SELECT es.commonName as animal, es.animalId, h.habitatId, h.nativeHabitatCoordinates as location FROM
         (
             endangeredHabitats
@@ -44,13 +45,12 @@ app.get('/get/endangeredHabitats/nativeHabitats/habitatId', (req, res) => {
             INNER JOIN nativeHabitats h ON endangeredHabitats.habitatId = h.habitatId
         );`;
         db.pool.query(sqlSelect, (err, result) => {
-            console.log("QUERY ERROR ", err);
-            console.log(result);
+            if (err) console.log("SELECT EH QUERY ERROR ", err);
             res.send(JSON.stringify(result));
         });
 })
 
-app.get('/get/endangeredNonprofits/nonprofits/nonprofitId', (req, res) => {
+app.get('/select/endangeredNonprofits/nonprofits/nonprofitId', (req, res) => {
         const sqlSelect = `SELECT es.commonName as animal, np.nonprofitName as nonprofit, es.animalId, np.nonprofitId FROM
         (
             endangeredNonprofits
@@ -58,10 +58,22 @@ app.get('/get/endangeredNonprofits/nonprofits/nonprofitId', (req, res) => {
             INNER JOIN nonprofits np ON endangeredNonprofits.nonprofitId = np.nonprofitId
         );`;
         db.pool.query(sqlSelect, (err, result) => {
-            console.log("QUERY ERROR ", err);
-            console.log(result);
+            if (err) console.log("SELECT EN QUERY ERROR ", err);
             res.send(JSON.stringify(result));
         });
+})
+
+/**
+ * INSERT/POST
+ */
+app.post('/insert/endangeredSpecies', (req, res) => {
+    const dt = req.body;
+    const sqlSelect = "INSERT INTO endangeredSpecies (scientificName, commonName, genus, family, `order`, class, phylum, cause, photoUrl, lastUpdate, captivityPlaceId) VALUES "+`('${dt.scientificName}', '${dt.commonName}', '${dt.genus}', '${dt.family}', '${dt.order}', '${dt.class}', '${dt.phylum}', '${dt.cause}', '${dt.photoUrl}', NOW(), ${dt.captivityPlaceId})`;
+    db.pool.query(sqlSelect, (err, result) => {
+        if (err) console.log("INSERT ES ERROR ", err);
+        console.log(result);
+        res.send("done");
+    });
 })
 
 /*
