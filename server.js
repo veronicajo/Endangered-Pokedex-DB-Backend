@@ -11,6 +11,7 @@ const bodyParser = require('body-parser');
 // Middleware 
 app.use(cors());
 app.use(bodyParser.json());
+app.use(errorHandler);
 
 /**
  * SELECT/GET
@@ -66,16 +67,26 @@ app.get('/select/endangeredNonprofits/nonprofits/nonprofitId', (req, res) => {
 /**
  * INSERT/POST
  */
-app.post('/insert/endangeredSpecies', (req, res) => {
+app.post('/insert/endangeredSpecies', (req, res, next) => {
     const dt = req.body;
     const sqlSelect = "INSERT INTO endangeredSpecies (scientificName, commonName, genus, family, `order`, class, phylum, cause, photoUrl, lastUpdate, captivityPlaceId) VALUES "+`('${dt.scientificName}', '${dt.commonName}', '${dt.genus}', '${dt.family}', '${dt.order}', '${dt.class}', '${dt.phylum}', '${dt.cause}', '${dt.photoUrl}', NOW(), ${dt.captivityPlaceId})`;
     db.pool.query(sqlSelect, (err, result) => {
-        if (err) console.log("INSERT ES ERROR ", err);
-        console.log(result);
-        res.send("done");
+        if (err) {
+            next(new Error("INSERT FAILED"));
+        } else {
+            console.log(result);
+            res.send("done");
+        }
     });
 })
 
+function errorHandler (err, req, res, next) {
+    if (res.headersSent) {
+      return next(err)
+    }
+    res.status(500)
+    res.send('error', { error: err })
+  }
 /*
     LISTENER
 */
