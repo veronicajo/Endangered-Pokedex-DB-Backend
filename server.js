@@ -80,6 +80,84 @@ app.post('/insert/endangeredSpecies', (req, res, next) => {
     });
 })
 
+app.post('/insert/nonprofits', (req, res, next) => {
+    const dt = req.body;
+    const sqlSelect = "INSERT INTO nonprofits (nonprofitName, nonprofitWebsite) VALUES "+`('${dt.nonprofitName}', '${dt.nonprofitWebsite}')`;
+    db.pool.query(sqlSelect, (err, result) => {
+        if (err) {
+            next(new Error("INSERT FAILED"));
+        } else {
+            console.log(result);
+            res.send("done");
+        }
+    });
+})
+
+app.post('/insert/endangered-nonprofits', (req, res, next) => {
+    const dt = req.body;
+    const sqlSelect = "INSERT INTO endangeredNonprofits (animalId, nonprofitId) VALUES "+`('${dt.animalId}', '${dt.nonprofitId}')`;
+    db.pool.query(sqlSelect, (err, result) => {
+        if (err) {
+            next(new Error("INSERT FAILED"));
+        } else {
+            console.log(result);
+            res.send("done");
+        }
+    });
+})
+
+app.post('/insert/habitats', (req, res, next) => {
+    const dt = req.body;
+    const sqlSelect = "INSERT INTO nativeHabitats (continent, country, biome, nativeHabitatCoordinates) VALUES "+`('${dt.continent}', '${dt.country}', '${dt.biome}', '${dt.nativeHabitatCoordinates}')`;
+    db.pool.query(sqlSelect, (err, result) => {
+        if (err) {
+            next(new Error("INSERT FAILED"));
+        } else {
+            console.log(result);
+            res.send("done");
+        }
+    });
+})
+
+app.post('/insert/endangered-habitats', (req, res, next) => {
+    const dt = req.body;
+    const sqlSelect = "INSERT INTO endangeredNonprofits (animalId, habitatId) VALUES "+`('${dt.animalId}', '${dt.habitatId}')`;
+    db.pool.query(sqlSelect, (err, result) => {
+        if (err) {
+            next(new Error("INSERT FAILED"));
+        } else {
+            console.log(result);
+            res.send("done");
+        }
+    });
+})
+
+app.post('/insert/captivity-places', (req, res, next) => {
+    const dt = req.body;
+    const sqlSelect = "INSERT INTO captivityPlaces (zooName, zooCity, zooState, zooCountry, zooCoordinates) VALUES "+`('${dt.zooName}', '${dt.zooCity}', '${dt.zooState}', '${dt.zooCountry}', '${dt.zooCoordinates}')`;
+    db.pool.query(sqlSelect, (err, result) => {
+        if (err) {
+            next(new Error("INSERT FAILED"));
+        } else {
+            console.log(result);
+            res.send("done");
+        }
+    });
+})
+
+app.post('/insert/number-left', (req, res, next) => {
+    const dt = req.body;
+    const sqlSelect = "INSERT INTO numberLeft (animalId, inCaptivity, inWild, decade, conservationStatus) VALUES "+`('${dt.animalId}', '${dt.inCaptivity}', '${dt.inWild}', '${dt.decade}', '${dt.conservationStatus}')`;
+    db.pool.query(sqlSelect, (err, result) => {
+        if (err) {
+            next(new Error("INSERT FAILED"));
+        } else {
+            console.log(result);
+            res.send("done");
+        }
+    });
+})
+
 function errorHandler (err, req, res, next) {
     if (res.headersSent) {
       return next(err)
