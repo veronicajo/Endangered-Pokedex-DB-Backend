@@ -69,8 +69,8 @@ app.get('/select/endangeredNonprofits/nonprofits/nonprofitId', (req, res) => {
  */
 app.post('/insert/endangeredSpecies', (req, res, next) => {
     const dt = req.body;
-    const sqlSelect = "INSERT INTO endangeredSpecies (scientificName, commonName, genus, family, `order`, class, phylum, cause, photoUrl, lastUpdate, captivityPlaceId) VALUES "+`('${dt.scientificName}', '${dt.commonName}', '${dt.genus}', '${dt.family}', '${dt.order}', '${dt.class}', '${dt.phylum}', '${dt.cause}', '${dt.photoUrl}', NOW(), ${dt.captivityPlaceId})`;
-    db.pool.query(sqlSelect, (err, result) => {
+    const sqlInsert = "INSERT INTO endangeredSpecies (scientificName, commonName, genus, family, `order`, class, phylum, cause, photoUrl, lastUpdate, captivityPlaceId) VALUES "+`('${dt.scientificName}', '${dt.commonName}', '${dt.genus}', '${dt.family}', '${dt.order}', '${dt.class}', '${dt.phylum}', '${dt.cause}', '${dt.photoUrl}', NOW(), ${dt.captivityPlaceId})`;
+    db.pool.query(sqlInsert, (err, result) => {
         if (err) {
             next(new Error("INSERT FAILED"));
         } else {
@@ -82,8 +82,8 @@ app.post('/insert/endangeredSpecies', (req, res, next) => {
 
 app.post('/insert/nonprofits', (req, res, next) => {
     const dt = req.body;
-    const sqlSelect = "INSERT INTO nonprofits (nonprofitName, nonprofitWebsite) VALUES "+`('${dt.nonprofitName}', '${dt.nonprofitWebsite}')`;
-    db.pool.query(sqlSelect, (err, result) => {
+    const sqlInsert = "INSERT INTO nonprofits (nonprofitName, nonprofitWebsite) VALUES "+`('${dt.nonprofitName}', '${dt.nonprofitWebsite}')`;
+    db.pool.query(sqlInsert, (err, result) => {
         if (err) {
             next(new Error("INSERT FAILED"));
         } else {
@@ -93,10 +93,10 @@ app.post('/insert/nonprofits', (req, res, next) => {
     });
 })
 
-app.post('/insert/endangered-nonprofits', (req, res, next) => {
+app.post('/insert/endangeredNonprofits', (req, res, next) => {
     const dt = req.body;
-    const sqlSelect = "INSERT INTO endangeredNonprofits (animalId, nonprofitId) VALUES "+`('${dt.animalId}', '${dt.nonprofitId}')`;
-    db.pool.query(sqlSelect, (err, result) => {
+    const sqlInsert = "INSERT INTO endangeredNonprofits (animalId, nonprofitId) VALUES "+`('${dt.animalId}', '${dt.nonprofitId}')`;
+    db.pool.query(sqlInsert, (err, result) => {
         if (err) {
             next(new Error("INSERT FAILED"));
         } else {
@@ -106,10 +106,10 @@ app.post('/insert/endangered-nonprofits', (req, res, next) => {
     });
 })
 
-app.post('/insert/habitats', (req, res, next) => {
+app.post('/insert/nativeHabitats', (req, res, next) => {
     const dt = req.body;
-    const sqlSelect = "INSERT INTO nativeHabitats (continent, country, biome, nativeHabitatCoordinates) VALUES "+`('${dt.continent}', '${dt.country}', '${dt.biome}', '${dt.nativeHabitatCoordinates}')`;
-    db.pool.query(sqlSelect, (err, result) => {
+    const sqlInsert = "INSERT INTO nativeHabitats (continent, country, biome, nativeHabitatCoordinates) VALUES "+`('${dt.continent}', '${dt.country}', '${dt.biome}', '${dt.nativeHabitatCoordinates}')`;
+    db.pool.query(sqlInsert, (err, result) => {
         if (err) {
             next(new Error("INSERT FAILED"));
         } else {
@@ -119,10 +119,10 @@ app.post('/insert/habitats', (req, res, next) => {
     });
 })
 
-app.post('/insert/endangered-habitats', (req, res, next) => {
+app.post('/insert/endangeredHabitats', (req, res, next) => {
     const dt = req.body;
-    const sqlSelect = "INSERT INTO endangeredNonprofits (animalId, habitatId) VALUES "+`('${dt.animalId}', '${dt.habitatId}')`;
-    db.pool.query(sqlSelect, (err, result) => {
+    const sqlInsert = "INSERT INTO endangeredNonprofits (animalId, habitatId) VALUES "+`('${dt.animalId}', '${dt.habitatId}')`;
+    db.pool.query(sqlInsert, (err, result) => {
         if (err) {
             next(new Error("INSERT FAILED"));
         } else {
@@ -132,10 +132,10 @@ app.post('/insert/endangered-habitats', (req, res, next) => {
     });
 })
 
-app.post('/insert/captivity-places', (req, res, next) => {
+app.post('/insert/captivityPlaces', (req, res, next) => {
     const dt = req.body;
-    const sqlSelect = "INSERT INTO captivityPlaces (zooName, zooCity, zooState, zooCountry, zooCoordinates) VALUES "+`('${dt.zooName}', '${dt.zooCity}', '${dt.zooState}', '${dt.zooCountry}', '${dt.zooCoordinates}')`;
-    db.pool.query(sqlSelect, (err, result) => {
+    const sqlInsert = "INSERT INTO captivityPlaces (zooName, zooCity, zooState, zooCountry, zooCoordinates) VALUES "+`('${dt.zooName}', '${dt.zooCity}', '${dt.zooState}', '${dt.zooCountry}', '${dt.zooCoordinates}')`;
+    db.pool.query(sqlInsert, (err, result) => {
         if (err) {
             next(new Error("INSERT FAILED"));
         } else {
@@ -145,12 +145,217 @@ app.post('/insert/captivity-places', (req, res, next) => {
     });
 })
 
-app.post('/insert/number-left', (req, res, next) => {
+app.post('/insert/numberLeft', (req, res, next) => {
     const dt = req.body;
-    const sqlSelect = "INSERT INTO numberLeft (animalId, inCaptivity, inWild, decade, conservationStatus) VALUES "+`('${dt.animalId}', '${dt.inCaptivity}', '${dt.inWild}', '${dt.decade}', '${dt.conservationStatus}')`;
-    db.pool.query(sqlSelect, (err, result) => {
+    const sqlInsert = "INSERT INTO numberLeft (animalId, inCaptivity, inWild, decade, conservationStatus) VALUES "+`('${dt.animalId}', '${dt.inCaptivity}', '${dt.inWild}', '${dt.decade}', '${dt.conservationStatus}')`;
+    db.pool.query(sqlInsert, (err, result) => {
         if (err) {
             next(new Error("INSERT FAILED"));
+        } else {
+            console.log(result);
+            res.send("done");
+        }
+    });
+})
+
+/**
+ * UPDATE/PUT
+ */
+// NEED TO ALLOW FOR NULL IN CAPTIVITYPLACEID and fix NOW()
+app.put('/update/endangeredSpecies', (req, res, next) => {
+    const dt = req.body;
+    const values = [dt.scientificName, dt.commonName, dt.genus, dt.family, dt.order, dt.class, dt.phylum, dt.cause, dt.photoUrl, `NOW()`, parseInt(dt.captivityPlaceId), parseInt(dt.animalId)]
+    const sqlUpdate = "UPDATE endangeredSpecies SET scientificName=?, commonName=?, genus=?, family=?, `order`=?, class=?, phylum=?, cause=?, photoUrl=?, lastUpdate=?, captivityPlaceId=? WHERE animalId=? ";
+    db.pool.query(sqlUpdate, values,
+        (err, result) => {
+        if (err) {
+            next(new Error("UPDATE FAILED"));
+        } else {
+            console.log(result);
+            res.send("done");
+        }
+    });
+})
+
+app.put('/update/nonprofits', (req, res, next) => {
+    const dt = req.body;
+    const values = [dt.nonprofitName, dt.nonprofitWebsite, parseInt(dt.nonprofitId)]
+    const sqlUpdate = "UPDATE nonprofits SET nonprofitName=?, nonprofitWebsite=? WHERE nonprofitId=? ";
+    db.pool.query(sqlUpdate, values,
+        (err, result) => {
+        if (err) {
+            next(new Error("UPDATE FAILED"));
+        } else {
+            console.log(result);
+            res.send("done");
+        }
+    });
+})
+
+// save
+// app.put('/update/endangeredNonprofits', (req, res, next) => {
+//     const dt = req.body;
+//     const values = [dt.nonprofitName, dt.nonprofitWebsite, parseInt(dt.nonprofitId)]
+//     const sqlUpdate = "UPDATE endangeredNonprofits SET nonprofitName=?, nonprofitWebsite=? WHERE nonprofitId=? ";
+//     db.pool.query(sqlUpdate, values,
+//         (err, result) => {
+//         if (err) {
+//             next(new Error("UPDATE FAILED"));
+//         } else {
+//             console.log(result);
+//             res.send("done");
+//         }
+//     });
+// })
+
+app.put('/update/nativeHabitats', (req, res, next) => {
+    const dt = req.body;
+    const values = [dt.continent, dt.country, dt.biome, dt.nativeHabitatCoordinates, parseInt(dt.habitatId)]
+    const sqlUpdate = "UPDATE nativeHabitats SET continent=?, country=?, biome=?, nativeHabitatCoordinates=? WHERE habitatId=? ";
+    db.pool.query(sqlUpdate, values,
+        (err, result) => {
+        if (err) {
+            next(new Error("UPDATE FAILED"));
+        } else {
+            console.log(result);
+            res.send("done");
+        }
+    });
+})
+
+//save
+// app.put('/update/endangeredHabitats', (req, res, next) => {
+//     const dt = req.body;
+//     const values = [dt.continent, dt.country, dt.biome, dt.nativeHabitatCoordinates, parseInt(dt.habitatId)]
+//     const sqlUpdate = "UPDATE endangeredHabitats SET continent=?, country=?, biome=?, nativeHabitatCoordinates=? WHERE habitatId=? ";
+//     db.pool.query(sqlUpdate, values,
+//         (err, result) => {
+//         if (err) {
+//             next(new Error("UPDATE FAILED"));
+//         } else {
+//             console.log(result);
+//             res.send("done");
+//         }
+//     });
+// })
+
+app.put('/update/captivityPlaces', (req, res, next) => {
+    const dt = req.body;
+    const values = [dt.zooName, dt.zooCity, dt.zooState, dt.zooCountry, dt.zooCoordinates, parseInt(dt.zooId)]
+    const sqlUpdate = "UPDATE captivityPlaces SET zooName=?, zooCity=?, zooState=?, zooCountry=?, zooCoordinates=? WHERE zooId=? ";
+    db.pool.query(sqlUpdate, values,
+        (err, result) => {
+        if (err) {
+            next(new Error("UPDATE FAILED"));
+        } else {
+            console.log(result);
+            res.send("done");
+        }
+    });
+})
+
+app.put('/update/numberLeft', (req, res, next) => {
+    const dt = req.body;
+    const values = [parseInt(dt.animalId), dt.inCaptivity, dt.inWild, dt.decade, dt.conservationStatus, parseInt(dt.numberLeftId)]
+    const sqlUpdate = "UPDATE numberLeft SET animalId=?, inCaptivity=?, inWild=?, decade=?, conservationStatus=? WHERE numberLeftId=? ";
+    db.pool.query(sqlUpdate, values,
+        (err, result) => {
+        if (err) {
+            next(new Error("UPDATE FAILED"));
+        } else {
+            console.log(result);
+            res.send("done");
+        }
+    });
+})
+
+/**
+ * DELETE
+ */
+app.delete('/delete/endangeredSpecies',(req, res, next) => {
+    const sqlDelete = "DELETE FROM endangeredSpecies WHERE animalId=?"
+    db.pool.query(sqlDelete, [req.body.animalId],
+        (err, result) => {
+        if (err) {
+            next(new Error("DELETE FAILED"));
+        } else {
+            console.log(result);
+            res.send("done");
+        }
+    });
+})
+
+app.delete('/delete/nonprofits',(req, res, next) => {
+    const sqlDelete = "DELETE FROM nonprofits WHERE nonprofitId=?"
+    db.pool.query(sqlDelete, [req.body.nonprofitId],
+        (err, result) => {
+        if (err) {
+            next(new Error("DELETE FAILED"));
+        } else {
+            console.log(result);
+            res.send("done");
+        }
+    });
+})
+
+app.delete('/delete/endangeredNonprofits',(req, res, next) => {
+    const sqlDelete = "DELETE FROM endangeredNonprofits WHERE animalId=? AND nonprofitId=?"
+    db.pool.query(sqlDelete, [req.body.animalId, req.body.nonprofitId],
+        (err, result) => {
+        if (err) {
+            next(new Error("DELETE FAILED"));
+        } else {
+            console.log(result);
+            res.send("done");
+        }
+    });
+})
+
+app.delete('/delete/nativeHabitats',(req, res, next) => {
+    const sqlDelete = "DELETE FROM nativeHabitats WHERE habitatId=?"
+    db.pool.query(sqlDelete, [req.body.habitatId],
+        (err, result) => {
+        if (err) {
+            next(new Error("DELETE FAILED"));
+        } else {
+            console.log(result);
+            res.send("done");
+        }
+    });
+})
+
+app.delete('/delete/endangeredHabitats',(req, res, next) => {
+    const sqlDelete = "DELETE FROM endangeredHabitats WHERE animalId=? AND habitatId=?"
+    db.pool.query(sqlDelete, [req.body.animalId, req.body.habitatId],
+        (err, result) => {
+        if (err) {
+            next(new Error("DELETE FAILED"));
+        } else {
+            console.log(result);
+            res.send("done");
+        }
+    });
+})
+
+app.delete('/delete/captivityPlaces',(req, res, next) => {
+    const sqlDelete = "DELETE FROM captivityPlaces WHERE zooId=?"
+    db.pool.query(sqlDelete, [req.body.zooId],
+        (err, result) => {
+        if (err) {
+            next(new Error("DELETE FAILED"));
+        } else {
+            console.log(result);
+            res.send("done");
+        }
+    });
+})
+
+app.delete('/delete/numberLeft',(req, res, next) => {
+    const sqlDelete = "DELETE FROM numberLeft WHERE numberLeftId=?"
+    db.pool.query(sqlDelete, [req.body.numberLeftId],
+        (err, result) => {
+        if (err) {
+            next(new Error("DELETE FAILED"));
         } else {
             console.log(result);
             res.send("done");
