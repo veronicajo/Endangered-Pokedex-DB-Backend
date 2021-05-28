@@ -121,7 +121,7 @@ app.post('/insert/nativeHabitats', (req, res, next) => {
 
 app.post('/insert/endangeredHabitats', (req, res, next) => {
     const dt = req.body;
-    const sqlInsert = "INSERT INTO endangeredNonprofits (animalId, habitatId) VALUES "+`('${dt.animalId}', '${dt.habitatId}')`;
+    const sqlInsert = "INSERT INTO endangeredHabitats (animalId, habitatId) VALUES "+`('${dt.animalId}', '${dt.habitatId}')`;
     db.pool.query(sqlInsert, (err, result) => {
         if (err) {
             next(new Error("INSERT FAILED"));
