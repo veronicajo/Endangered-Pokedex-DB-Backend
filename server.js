@@ -39,7 +39,7 @@ app.get('/select/:table', (req, res) => {
 });
 
 app.get('/select/endangeredHabitats/nativeHabitats/habitatId', (req, res) => {
-        const sqlSelect = `SELECT es.commonName as animal, es.animalId, h.habitatId, h.nativeHabitatCoordinates as location FROM
+        const sqlSelect = `SELECT endangeredHabitatId, es.commonName as animal, es.animalId, h.habitatId, h.nativeHabitatCoordinates as location FROM
         (
             endangeredHabitats
             INNER JOIN endangeredSpecies es ON endangeredHabitats.animalId = es.animalId
@@ -52,7 +52,7 @@ app.get('/select/endangeredHabitats/nativeHabitats/habitatId', (req, res) => {
 })
 
 app.get('/select/endangeredNonprofits/nonprofits/nonprofitId', (req, res) => {
-        const sqlSelect = `SELECT es.commonName as animal, np.nonprofitName as nonprofit, es.animalId, np.nonprofitId FROM
+        const sqlSelect = `SELECT endangeredNonprofitId, es.commonName as animal, np.nonprofitName as nonprofit, es.animalId, np.nonprofitId FROM
         (
             endangeredNonprofits
             INNER JOIN endangeredSpecies es ON endangeredNonprofits.animalId = es.animalId
@@ -69,7 +69,7 @@ app.get('/select/endangeredNonprofits/nonprofits/nonprofitId', (req, res) => {
  */
 app.post('/insert/endangeredSpecies', (req, res, next) => {
     const dt = req.body;
-    const sqlInsert = "INSERT INTO endangeredSpecies (scientificName, commonName, genus, family, `order`, class, phylum, cause, photoUrl, lastUpdate, captivityPlaceId) VALUES "+`('${dt.scientificName}', '${dt.commonName}', '${dt.genus}', '${dt.family}', '${dt.order}', '${dt.class}', '${dt.phylum}', '${dt.cause}', '${dt.photoUrl}', NOW(), ${dt.captivityPlaceId})`;
+    const sqlInsert = "INSERT INTO endangeredSpecies (scientificName, commonName, genus, family, kingdomOrder, class, phylum, cause, photoUrl, lastUpdate, captivityPlaceId) VALUES "+`('${dt.scientificName}', '${dt.commonName}', '${dt.genus}', '${dt.family}', '${dt.kingdomOrder}', '${dt.class}', '${dt.phylum}', '${dt.cause}', '${dt.photoUrl}', NOW(), ${dt.captivityPlaceId})`;
     db.pool.query(sqlInsert, (err, result) => {
         if (err) {
             next(new Error("INSERT FAILED"));
@@ -164,8 +164,8 @@ app.post('/insert/numberLeft', (req, res, next) => {
 // NEED TO ALLOW FOR NULL IN CAPTIVITYPLACEID and fix NOW()
 app.put('/update/endangeredSpecies', (req, res, next) => {
     const dt = req.body;
-    const values = [dt.scientificName, dt.commonName, dt.genus, dt.family, dt.order, dt.class, dt.phylum, dt.cause, dt.photoUrl, `NOW()`, dt.captivityPlaceId, dt.animalId];
-    const sqlUpdate = "UPDATE endangeredSpecies SET scientificName=?, commonName=?, genus=?, family=?, `order`=?, class=?, phylum=?, cause=?, photoUrl=?, lastUpdate=?, captivityPlaceId=? WHERE animalId=?";
+    const values = [dt.scientificName, dt.commonName, dt.genus, dt.family, dt.kingdomOrder, dt.class, dt.phylum, dt.cause, dt.photoUrl, dt.captivityPlaceId, dt.animalId];
+    const sqlUpdate = "UPDATE endangeredSpecies SET scientificName=?, commonName=?, genus=?, family=?, kingdomOrder=?, class=?, phylum=?, cause=?, photoUrl=?, lastUpdate=NOW(), captivityPlaceId=? WHERE animalId=?";
     db.pool.query(sqlUpdate, values,
         (err, result) => {
         if (err) {
