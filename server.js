@@ -121,7 +121,7 @@ app.post('/insert/nativeHabitats', (req, res, next) => {
 
 app.post('/insert/endangeredHabitats', (req, res, next) => {
     const dt = req.body;
-    const sqlInsert = "INSERT INTO endangeredNonprofits (animalId, habitatId) VALUES "+`('${dt.animalId}', '${dt.habitatId}')`;
+    const sqlInsert = "INSERT INTO endangeredHabitats (animalId, habitatId) VALUES "+`('${dt.animalId}', '${dt.habitatId}')`;
     db.pool.query(sqlInsert, (err, result) => {
         if (err) {
             next(new Error("INSERT FAILED"));
@@ -164,8 +164,8 @@ app.post('/insert/numberLeft', (req, res, next) => {
 // NEED TO ALLOW FOR NULL IN CAPTIVITYPLACEID and fix NOW()
 app.put('/update/endangeredSpecies', (req, res, next) => {
     const dt = req.body;
-    const values = [dt.scientificName, dt.commonName, dt.genus, dt.family, dt.order, dt.class, dt.phylum, dt.cause, dt.photoUrl, `NOW()`, parseInt(dt.captivityPlaceId), parseInt(dt.animalId)]
-    const sqlUpdate = "UPDATE endangeredSpecies SET scientificName=?, commonName=?, genus=?, family=?, `order`=?, class=?, phylum=?, cause=?, photoUrl=?, lastUpdate=?, captivityPlaceId=? WHERE animalId=? ";
+    const values = [dt.scientificName, dt.commonName, dt.genus, dt.family, dt.order, dt.class, dt.phylum, dt.cause, dt.photoUrl, `NOW()`, dt.captivityPlaceId, dt.animalId];
+    const sqlUpdate = "UPDATE endangeredSpecies SET scientificName=?, commonName=?, genus=?, family=?, `order`=?, class=?, phylum=?, cause=?, photoUrl=?, lastUpdate=?, captivityPlaceId=? WHERE animalId=?";
     db.pool.query(sqlUpdate, values,
         (err, result) => {
         if (err) {
@@ -179,8 +179,8 @@ app.put('/update/endangeredSpecies', (req, res, next) => {
 
 app.put('/update/nonprofits', (req, res, next) => {
     const dt = req.body;
-    const values = [dt.nonprofitName, dt.nonprofitWebsite, parseInt(dt.nonprofitId)]
-    const sqlUpdate = "UPDATE nonprofits SET nonprofitName=?, nonprofitWebsite=? WHERE nonprofitId=? ";
+    const values = [dt.nonprofitName, dt.nonprofitWebsite, dt.nonprofitId];
+    const sqlUpdate = "UPDATE nonprofits SET nonprofitName=?, nonprofitWebsite=? WHERE nonprofitId=?";
     db.pool.query(sqlUpdate, values,
         (err, result) => {
         if (err) {
@@ -192,26 +192,25 @@ app.put('/update/nonprofits', (req, res, next) => {
     });
 })
 
-// save
-// app.put('/update/endangeredNonprofits', (req, res, next) => {
-//     const dt = req.body;
-//     const values = [dt.nonprofitName, dt.nonprofitWebsite, parseInt(dt.nonprofitId)]
-//     const sqlUpdate = "UPDATE endangeredNonprofits SET nonprofitName=?, nonprofitWebsite=? WHERE nonprofitId=? ";
-//     db.pool.query(sqlUpdate, values,
-//         (err, result) => {
-//         if (err) {
-//             next(new Error("UPDATE FAILED"));
-//         } else {
-//             console.log(result);
-//             res.send("done");
-//         }
-//     });
-// })
+app.put('/update/endangeredNonprofits', (req, res, next) => {
+    const dt = req.body;
+    const values = [dt.animalId, dt.nonprofitId, dt.endangeredNonprofitId];
+    const sqlUpdate = "UPDATE endangeredNonprofits SET animalId=?, nonprofitId=? WHERE endangeredNonprofitId=?";
+    db.pool.query(sqlUpdate, values,
+        (err, result) => {
+        if (err) {
+            next(new Error("UPDATE FAILED"));
+        } else {
+            console.log(result);
+            res.send("done");
+        }
+    });
+})
 
 app.put('/update/nativeHabitats', (req, res, next) => {
     const dt = req.body;
-    const values = [dt.continent, dt.country, dt.biome, dt.nativeHabitatCoordinates, parseInt(dt.habitatId)]
-    const sqlUpdate = "UPDATE nativeHabitats SET continent=?, country=?, biome=?, nativeHabitatCoordinates=? WHERE habitatId=? ";
+    const values = [dt.continent, dt.country, dt.biome, dt.nativeHabitatCoordinates, dt.habitatId];
+    const sqlUpdate = "UPDATE nativeHabitats SET continent=?, country=?, biome=?, nativeHabitatCoordinates=? WHERE habitatId=?";
     db.pool.query(sqlUpdate, values,
         (err, result) => {
         if (err) {
@@ -223,26 +222,25 @@ app.put('/update/nativeHabitats', (req, res, next) => {
     });
 })
 
-//save
-// app.put('/update/endangeredHabitats', (req, res, next) => {
-//     const dt = req.body;
-//     const values = [dt.continent, dt.country, dt.biome, dt.nativeHabitatCoordinates, parseInt(dt.habitatId)]
-//     const sqlUpdate = "UPDATE endangeredHabitats SET continent=?, country=?, biome=?, nativeHabitatCoordinates=? WHERE habitatId=? ";
-//     db.pool.query(sqlUpdate, values,
-//         (err, result) => {
-//         if (err) {
-//             next(new Error("UPDATE FAILED"));
-//         } else {
-//             console.log(result);
-//             res.send("done");
-//         }
-//     });
-// })
+app.put('/update/endangeredHabitats', (req, res, next) => {
+    const dt = req.body;
+    const values = [dt.animalId, dt.habitatId, dt.endangeredHabitatId];
+    const sqlUpdate = "UPDATE endangeredHabitats SET animalId=?, habitatId=? WHERE endangeredHabitatId=?";
+    db.pool.query(sqlUpdate, values,
+        (err, result) => {
+        if (err) {
+            next(new Error("UPDATE FAILED"));
+        } else {
+            console.log(result);
+            res.send("done");
+        }
+    });
+})
 
 app.put('/update/captivityPlaces', (req, res, next) => {
     const dt = req.body;
-    const values = [dt.zooName, dt.zooCity, dt.zooState, dt.zooCountry, dt.zooCoordinates, parseInt(dt.zooId)]
-    const sqlUpdate = "UPDATE captivityPlaces SET zooName=?, zooCity=?, zooState=?, zooCountry=?, zooCoordinates=? WHERE zooId=? ";
+    const values = [dt.zooName, dt.zooCity, dt.zooState, dt.zooCountry, dt.zooCoordinates, dt.zooId];
+    const sqlUpdate = "UPDATE captivityPlaces SET zooName=?, zooCity=?, zooState=?, zooCountry=?, zooCoordinates=? WHERE zooId=?";
     db.pool.query(sqlUpdate, values,
         (err, result) => {
         if (err) {
@@ -256,8 +254,8 @@ app.put('/update/captivityPlaces', (req, res, next) => {
 
 app.put('/update/numberLeft', (req, res, next) => {
     const dt = req.body;
-    const values = [parseInt(dt.animalId), dt.inCaptivity, dt.inWild, dt.decade, dt.conservationStatus, parseInt(dt.numberLeftId)]
-    const sqlUpdate = "UPDATE numberLeft SET animalId=?, inCaptivity=?, inWild=?, decade=?, conservationStatus=? WHERE numberLeftId=? ";
+    const values = [parseInt(dt.animalId), dt.inCaptivity, dt.inWild, dt.decade, dt.conservationStatus, dt.numberLeftId];
+    const sqlUpdate = "UPDATE numberLeft SET animalId=?, inCaptivity=?, inWild=?, decade=?, conservationStatus=? WHERE numberLeftId=?";
     db.pool.query(sqlUpdate, values,
         (err, result) => {
         if (err) {
@@ -273,7 +271,7 @@ app.put('/update/numberLeft', (req, res, next) => {
  * DELETE
  */
 app.delete('/delete/endangeredSpecies',(req, res, next) => {
-    const sqlDelete = "DELETE FROM endangeredSpecies WHERE animalId=?"
+    const sqlDelete = "DELETE FROM endangeredSpecies WHERE animalId=?";
     db.pool.query(sqlDelete, [req.body.animalId],
         (err, result) => {
         if (err) {
@@ -286,7 +284,7 @@ app.delete('/delete/endangeredSpecies',(req, res, next) => {
 })
 
 app.delete('/delete/nonprofits',(req, res, next) => {
-    const sqlDelete = "DELETE FROM nonprofits WHERE nonprofitId=?"
+    const sqlDelete = "DELETE FROM nonprofits WHERE nonprofitId=?";
     db.pool.query(sqlDelete, [req.body.nonprofitId],
         (err, result) => {
         if (err) {
@@ -299,8 +297,8 @@ app.delete('/delete/nonprofits',(req, res, next) => {
 })
 
 app.delete('/delete/endangeredNonprofits',(req, res, next) => {
-    const sqlDelete = "DELETE FROM endangeredNonprofits WHERE animalId=? AND nonprofitId=?"
-    db.pool.query(sqlDelete, [req.body.animalId, req.body.nonprofitId],
+    const sqlDelete = "DELETE FROM endangeredNonprofits WHERE endangeredNonprofitId=?";
+    db.pool.query(sqlDelete, [req.body.endangeredNonprofitId],
         (err, result) => {
         if (err) {
             next(new Error("DELETE FAILED"));
@@ -312,7 +310,7 @@ app.delete('/delete/endangeredNonprofits',(req, res, next) => {
 })
 
 app.delete('/delete/nativeHabitats',(req, res, next) => {
-    const sqlDelete = "DELETE FROM nativeHabitats WHERE habitatId=?"
+    const sqlDelete = "DELETE FROM nativeHabitats WHERE habitatId=?";
     db.pool.query(sqlDelete, [req.body.habitatId],
         (err, result) => {
         if (err) {
@@ -325,8 +323,8 @@ app.delete('/delete/nativeHabitats',(req, res, next) => {
 })
 
 app.delete('/delete/endangeredHabitats',(req, res, next) => {
-    const sqlDelete = "DELETE FROM endangeredHabitats WHERE animalId=? AND habitatId=?"
-    db.pool.query(sqlDelete, [req.body.animalId, req.body.habitatId],
+    const sqlDelete = "DELETE FROM endangeredHabitats WHERE endangeredHabitatId=?";
+    db.pool.query(sqlDelete, [eq.body.endangeredHabitatId],
         (err, result) => {
         if (err) {
             next(new Error("DELETE FAILED"));
@@ -338,7 +336,7 @@ app.delete('/delete/endangeredHabitats',(req, res, next) => {
 })
 
 app.delete('/delete/captivityPlaces',(req, res, next) => {
-    const sqlDelete = "DELETE FROM captivityPlaces WHERE zooId=?"
+    const sqlDelete = "DELETE FROM captivityPlaces WHERE zooId=?";
     db.pool.query(sqlDelete, [req.body.zooId],
         (err, result) => {
         if (err) {
@@ -351,7 +349,7 @@ app.delete('/delete/captivityPlaces',(req, res, next) => {
 })
 
 app.delete('/delete/numberLeft',(req, res, next) => {
-    const sqlDelete = "DELETE FROM numberLeft WHERE numberLeftId=?"
+    const sqlDelete = "DELETE FROM numberLeft WHERE numberLeftId=?";
     db.pool.query(sqlDelete, [req.body.numberLeftId],
         (err, result) => {
         if (err) {
