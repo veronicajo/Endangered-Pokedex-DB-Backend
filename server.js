@@ -324,7 +324,7 @@ app.delete('/delete/nativeHabitats',(req, res, next) => {
 
 app.delete('/delete/endangeredHabitats',(req, res, next) => {
     const sqlDelete = "DELETE FROM endangeredHabitats WHERE endangeredHabitatId=?";
-    db.pool.query(sqlDelete, [eq.body.endangeredHabitatId],
+    db.pool.query(sqlDelete, [req.body.endangeredHabitatId],
         (err, result) => {
         if (err) {
             next(new Error("DELETE FAILED"));
