@@ -19,7 +19,7 @@ app.use(errorHandler);
  */
 app.get('/select/numberLeft', (req, res) => {
     const tableName = req.params.table;
-        const sqlSelect = `SELECT numberLeftId, CASE WHEN inCaptivity = -1 THEN 'UNKNOWN' ELSE inCaptivity END as inCaptivity, inWild, decade, conservationStatus, (SELECT es.commonName) as animal, es.animalId FROM numberLeft nl INNER JOIN endangeredSpecies es ON es.animalId = nl.animalId`;
+        const sqlSelect = `SELECT numberLeftId, CASE WHEN inCaptivity = -1 THEN 'UNKNOWN' ELSE inCaptivity END as inCaptivity, CASE WHEN inWild = -1 THEN 'UNKNOWN' ELSE inWild END as inWild, decade, conservationStatus, (SELECT es.commonName) as animal, es.animalId FROM numberLeft nl INNER JOIN endangeredSpecies es ON es.animalId = nl.animalId`;
         db.pool.query(sqlSelect, (err, result) => {
             if (err) console.log("SELECT NL QUERY ERROR ", err);
             res.send(JSON.stringify(result));
