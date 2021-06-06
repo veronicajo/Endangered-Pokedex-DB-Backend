@@ -1,7 +1,8 @@
 const express = require('express');
 const app = express(); 
 require('dotenv').config();           
-PORT = process.env.PORT || 60500;               
+PORT = process.env.PORT || 60500;  
+             
 const db = require('./db-connector')
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -164,6 +165,9 @@ app.post('/insert/numberLeft', (req, res, next) => {
 // NEED TO ALLOW FOR NULL IN CAPTIVITYPLACEID and fix NOW()
 app.put('/update/endangeredSpecies', (req, res, next) => {
     const dt = req.body;
+    if (dt.captivityPlaceId == "") {
+        delete dt['captivityPlaceId'];
+    }
     const values = [dt.scientificName, dt.commonName, dt.genus, dt.family, dt.kingdomOrder, dt.class, dt.phylum, dt.cause, dt.photoUrl, dt.captivityPlaceId, dt.animalId];
     const sqlUpdate = "UPDATE endangeredSpecies SET scientificName=?, commonName=?, genus=?, family=?, kingdomOrder=?, class=?, phylum=?, cause=?, photoUrl=?, lastUpdate=NOW(), captivityPlaceId=? WHERE animalId=?";
     db.pool.query(sqlUpdate, values,
