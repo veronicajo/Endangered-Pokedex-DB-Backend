@@ -166,7 +166,6 @@ app.post('/insert/numberLeft', (req, res, next) => {
 /**
  * UPDATE/PUT
  */
-// NEED TO ALLOW FOR NULL IN CAPTIVITYPLACEID and fix NOW()
 app.put('/update/endangeredSpecies', (req, res, next) => {
     const dt = req.body;
     if (dt.captivityPlaceId == "") {
