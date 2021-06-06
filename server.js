@@ -70,9 +70,13 @@ app.get('/select/endangeredNonprofits/nonprofits/nonprofitId', (req, res) => {
  */
 app.post('/insert/endangeredSpecies', (req, res, next) => {
     const dt = req.body;
-    const sqlInsert = "INSERT INTO endangeredSpecies (scientificName, commonName, genus, family, kingdomOrder, class, phylum, cause, photoUrl, lastUpdate, captivityPlaceId) VALUES "+`('${dt.scientificName}', '${dt.commonName}', '${dt.genus}', '${dt.family}', '${dt.kingdomOrder}', '${dt.class}', '${dt.phylum}', '${dt.cause}', '${dt.photoUrl}', NOW(), ${dt.captivityPlaceId})`;
+    let sqlInsert = "INSERT INTO endangeredSpecies (scientificName, commonName, genus, family, kingdomOrder, class, phylum, cause, photoUrl, lastUpdate, captivityPlaceId) VALUES "+`('${dt.scientificName}', '${dt.commonName}', '${dt.genus}', '${dt.family}', '${dt.kingdomOrder}', '${dt.class}', '${dt.phylum}', '${dt.cause}', '${dt.photoUrl}', NOW(), ${dt.captivityPlaceId})`;
+        if (dt.captivityPlaceId == "") {
+            sqlInsert = "INSERT INTO endangeredSpecies (scientificName, commonName, genus, family, kingdomOrder, class, phylum, cause, photoUrl, lastUpdate) VALUES "+`('${dt.scientificName}', '${dt.commonName}', '${dt.genus}', '${dt.family}', '${dt.kingdomOrder}', '${dt.class}', '${dt.phylum}', '${dt.cause}', '${dt.photoUrl}', NOW())`;
+        }
     db.pool.query(sqlInsert, (err, result) => {
         if (err) {
+            console.log(err);
             next(new Error("INSERT FAILED"));
         } else {
             console.log(result);
