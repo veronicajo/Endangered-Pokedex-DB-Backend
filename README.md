@@ -7,6 +7,9 @@ MySQL was utilized to store data and requires the user to be on the OSU VPN in o
 
 Completed website including the front end can be viewed here: http://ancient-basin-64099.herokuapp.com/
 
+#### Demo Video
+https://user-images.githubusercontent.com/59591532/124504840-17825500-dd7d-11eb-9f90-62e947d14d63.mov
+
 
 ## To get started:
 
