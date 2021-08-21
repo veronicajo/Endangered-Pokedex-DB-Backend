@@ -1,7 +1,7 @@
 # endangered-pokedex-db-backend
 
 ## About
-Backend portion of a CRUD website that displays information on endangered species using JavaScript, Node.js, Express, and SQL to receive requests form and send data to the client side.
+Backend portion of a CRUD website that displays information on endangered species using JavaScript, Node.js, Express, and SQL to receive requests from and send data to the client side.
 
 MySQL was utilized to store data and requires the user to be on the OSU VPN in order to create, read, update, or delete data stored in the database.
 
